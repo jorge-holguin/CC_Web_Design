@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>Intranet - CONDOR CLEANING & MAINTENANCE</title>
+<link href="./styles/Home.css" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css?family=Montserrat:600&display=swap" rel="stylesheet">
+</head>
+<body>
+ <header>
+    <div class="header-container">
+        <div class="header-left">
+            <img src="./images-sist/icons/button-01.png" alt="Pulgar_Logo">
+            <span>We're Available 24/7</span>
+        </div>
+        <div class="header-center">
+            <img src="./images-sist/icons/buttom-02.png" alt="Tuerca_Logo">
+            <div>
+              <span>Serving San Francisco - Bay Area - East Bay and San Jose, CA.</span>
+              <span>Established since 2007.</span>
+            </div>
+        </div>
+        <div class="header-right">
+            <img src="./images-sist/icons/buttom-03.png" alt="Telefono_Logo">
+            <span>Call Us +1 (408) 807 0738</span>
+            <button class="schedule-button">SCHEDULE SERVICES</button>
+        </div>
+    </div>
+</header>
+    
+    <div class="login-wrapper">
+            <div class="login-header">
+                <img src="./images-sist/logo.webp" alt="Logo de Condor Cleaning">
+            </div>
+        <div class="login-form">
+            <h2>Intranet</h2>
+            <% 
+            Dim P_User, P_Pass, P_Message
+            P_User = Request("P_USER")
+            P_Pass = Request("P_PASS")
+            P_Message = Request.QueryString("p_message")
+            %>
+            <form id="login-form" action="Home_Action.asp" method="post" onsubmit="return validateForm()">
+                <div class="form-group">
+                    <label for="username">Username</label>
+                    <input type="text" id="username" name="P_USER" value="<%=P_User%>" maxlength="8" required>
+                </div>
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" name="P_PASS" maxlength="8" required>
+                </div>
+                <% If P_Message = 1 Then %>
+                    <p>Error: Invalid Username or Password</p>
+                <% End If %>
+                <div class="form-actions">
+                    <button type="submit">Sign In</button>
+                </div>
+                <a href="#" class="forgot-password">Forgot Password?</a>
+            </form>
+        </div>
+        <address>
+            1035 Coleman Rd 7306<br>
+            San Jose, California 95123<br>
+            Phone/Fax: 1 (800) 815-0671
+        </address>
+        <a href="https://www.condorcleaning.net" class="external-link">
+            Visit Website <img src="./images-sist/icons/web-svgrepo-com.svg" alt="Website">
+        </a>
+    </div>
+</html>
+
+

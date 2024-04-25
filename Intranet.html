@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Intranet - CONDOR CLEANING & MAINTENANCE</title>
+    <link href="./styles/Intranet.css" rel="stylesheet" type="text/css">
+</head>
+<body>
+    <%
+        ' Variables de usuario y apertura de registro
+        p_user = Request.Cookies("isLoggedInAs")("username")
+        Set SNewsSet = Server.CreateObject("ADODB.RECORDSET")
+        StrSql = "SELECT * FROM CON_users WHERE cli_user = '" & p_user & "'"
+        SNewsSet.Open StrSql, Session("BDREGI_ConnectionString"), adOpenDynamic, adLockPessimistic, adCmdText
+        p_Name = SNewsSet("Cli_Representa")
+        p_Cli_Access = SNewsSet("User_Access")
+    %>
+    <header>     
+
+    <div class="header-container">
+        <div class="header-left">
+            <img src="./images-sist/icons/button-01.png" alt="Pulgar_Logo">
+            <span>We're Available 24/7</span>
+        </div>
+        <div class="header-center">
+            <img src="./images-sist/icons/buttom-02.png" alt="Tuerca_Logo">
+            <div>
+              <span>Serving San Francisco - Bay Area - East Bay and San Jose, CA.</span>
+              <span>Established since 2007.</span>
+            </div>
+        </div>
+        <div class="header-right">
+            <img src="./images-sist/icons/buttom-03.png" alt="Telefono_Logo">
+            <span>Call Us +1 (408) 807 0738</span>
+            <button class="schedule-button">SCHEDULE SERVICES</button>
+        </div>
+    </div>
+    </header>
+
+    <div class="nav-container">
+        <div class="logo-container">
+          <a href="Home.asp">
+            <img src="./images-sist/icons/condor.svg" alt="Inicio" class="logo" />
+          </a>
+        </div>
+        <nav id="main-navbar">
+            <ul class="navbar-list">
+              <!-- Primera fila de enlaces -->
+              <li class="navbar-item">
+                <a href="Home.asp" class="nav-link">Home</a>
+              </li>
+              <li class="navbar-item">
+                <a href="Service_Agreement.asp" class="nav-link"
+                  >Service Agreement</a
+                >
+              </li>
+              <li class="navbar-item">
+                <a href="Service_Outline.asp" class="nav-link">Service Outline</a>
+              </li>
+              <li class="navbar-item">
+                <a href="Staff.asp" class="nav-link">Staff</a>
+              </li>
+              <li class="navbar-item">
+                <a href="Prod_Equip.asp" class="nav-link">Products & Equipment</a>
+              </li>
+          
+              <!-- Segunda fila de enlaces -->
+              <li class="navbar-item">
+                <a href="Request.asp" class="nav-link">Request</a>
+              </li>
+              <li class="navbar-item">
+                <a href="BInvoices.asp" class="nav-link">Invoices</a>
+              </li>
+              <li class="navbar-item">
+                <a href="Maintenance.asp?p_FFirst=1" class="nav-link"
+                  >Maintance</a
+                >
+              </li>
+              <li class="navbar-item">
+                <a href="Inventory.asp" class="nav-link">Inventory</a>
+              </li>
+              <li class="navbar-item">
+                <a href="MarketPlace.asp" class="nav-link">Marketplace</a>
+              </li>
+            </ul>
+          </nav>
+        <a href="logout.asp" class="nav-link logo-link">
+          <img src="./images-sist/icons/logout.svg" alt="LogOFF" />
+        </a>
+    </div>
+      
+    <div class="main-container">
+        <div class="content">
+            <h1>Welcome to Your Intranet</h1>
+            <h2>Dashboard</h2>
+            <p>Welcome, <%=p_Name%>. Here is your custom dashboard.</p>
+            <% If p_Cli_Access = 9 Then %>
+                <p>You have administrator access. You can view and edit all administrative settings.</p>
+            <% Else %>
+                <p>You have standard user access. If you need higher-level access, please contact your administrator.</p>
+            <% End If %>
+    
+            <!-- Flexbox Container for Links -->
+            <div class="links-flex-container">
+                <% If p_Cli_Access = 9 Then %>
+                    <div class="flex-item">
+                        <a href="Delivery.asp"><img src="images-sist/Icon_001.png" alt="Delivery" /></a>
+                        <p class="link-title">Delivery</p>
+                    </div>
+                <% Else %>
+                    <div class="flex-item">
+                        <a href="Service_Agreement.asp"><img src="images-sist/Icon_001.png" alt="Service Agreement" /></a>
+                        <p class="link-title">Service Agreement</p>
+                    </div>
+                <% End If %>
+                
+                <!-- Remaining flex items -->
+            <div class="flex-item">
+                <a href="Service_Outline.asp"><img src="images-sist/Icon_005.png" alt="Service Outline" /></a>
+                <p>Service Outline</p>
+            </div>
+            <div class="flex-item">
+                <a href="Staff.asp"><img src="images-sist/ICON_007.png" alt="Staff" /></a>
+                <p>Staff</p>
+            </div>
+            <!-- ... Other flex items for Products & Equipment, Request, Invoices, etc. ... -->
+            
+            <div class="flex-item">
+                <a href="Maintenance.asp?p_FFirst=1"><img src="images-sist/ICON_013.png" alt="Maintenance" /></a>
+                <p>Maintenance</p>
+            </div>
+            <div class="flex-item">
+                <a href="Inventory.asp?p_Access=0"><img src="images-sist/ICON_018.png" alt="Inventory" /></a>
+                <p>Inventory</p>
+            </div>
+            <div class="flex-item">
+                <a href="MarketPlace.asp"><img src="images-sist/ICON_011.png" alt="Market Place" /></a>
+                <p>Market Place</p>
+            </div>
+
+            <!-- Log OFF in its own row -->
+            <div class="flex-item log-off">
+                <a href="LogOFF.asp"><img src="images-sist/ICON_010.png" alt="Log OFF" /></a>
+                <p>Log OFF</p>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <% If p_Cli_Access = 9 Then %>
+        <div class="footer-cotainer">
+        <div class="admin-container"> 
+            <!-- Column 1: General Tables -->
+            <div class="admin-column">
+                <div class="admin-section">
+                    <h4>General Tables</h4>
+                    <a href="Edit_Company.asp?p_orden=0" class="menu-link">Edit Company</a>
+                    <a href="Edit_Users.asp?p_orden=0" class="menu-link">Edit Users</a>
+                    <a href="Edit_Customers.asp?p_orden=0" class="menu-link">Customers's User</a>
+                    <a href="Edit_TProducts.asp?p_orden=0" class="menu-link">Type of Product</a>
+                    <a href="Edit_Products.asp?p_orden=0" class="menu-link">Products</a>
+                    <a href="Edit_Tools.asp?p_orden=0" class="menu-link">Equipment</a>
+                    <a href="Edit_Personal.asp?p_orden=0" class="menu-link">Staff</a>
+                </div>
+            </div>
+        
+            <!-- Column 2: Maintenance and Request -->
+            <div class="admin-column">
+                <div class="admin-section">
+                    <h4>Maintenance</h4>
+                    <a href="mInvoice_Rec.asp" class="menu-link">Maintenance</a>
+                </div>
+                <div class="admin-section">
+                    <h4>Request</h4>
+                    <a href="Check_Notes.asp?p_orden=0" class="menu-link">To Address</a>
+                </div>
+            </div>
+        
+            <!-- Column 3: Customers and Services -->
+            <div class="admin-column">
+                <div class="admin-section">
+                    <h4>Customers</h4>
+                    <a href="Edit_CustomersMov.asp?p_orden=0" class="menu-link">Monitoring Services</a>
+                </div>
+                <div class="admin-section">
+                    <h4>Services</h4>
+                    <a href="Edit_Services.asp?p_orden=0" class="menu-link">Services</a>
+                    <a href="Edit_ServicesDetail.asp?p_orden=0" class="menu-link">Services x Detail</a>
+                    <a href="BInvoice_Rec.asp" class="menu-link">Invoices</a>
+                </div>
+            </div>
+        
+            <!-- Column 4: Inventory and Marketing -->
+            <div class="admin-column">
+                <div class="admin-section">
+                    <h4>Inventory</h4>
+                    <a href="Edit_Inventory.asp" class="menu-link">Inventory</a>
+                    <a href="Edit_Stock_IN.asp" class="menu-link">Stock IN</a>
+                    <a href="Edit_Stock_out.asp" class="menu-link">Stock OUT</a>
+                </div>
+                <div class="admin-section">
+                    <h4>Marketing</h4>
+                    <a href="Sale_Products.asp" class="menu-link">Product Register</a>
+                    <a href="Market_Invoice.asp" class="menu-link">Marketing Invoices</a>
+                </div>
+            </div>
+        </div>
+        </div>
+        <% End If %>
+
+        <address>
+            1035 Coleman Rd 7306 San Jose, California 95123<br>
+            Phone/Fax: 1 (800) 815-0671
+        </address>
+        <div class="parent-container">
+        <a href="https://www.condorcleaning.net" class="external-link">
+            Visit Website <img src="./images-sist/icons/web-svgrepo-com.svg" alt="Favicon">
+        </a>
+        </div>
+
+        
+    </footer>    
+</body>
+</html>
