@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Intranet - CONDOR CLEANING & MAINTENANCE</title>
+    <link href="pages.css" rel="stylesheet" type="text/css">
+</head>
+<body>
+    <%
+        ' Variables de usuario y apertura de registro
+        p_user = Request.Cookies("isLoggedInAs")("username")
+        Set SNewsSet = Server.CreateObject("ADODB.RECORDSET")
+        StrSql = "SELECT * FROM CON_users WHERE cli_user = '" & p_user & "'"
+        SNewsSet.Open StrSql, Session("BDREGI_ConnectionString"), adOpenDynamic, adLockPessimistic, adCmdText
+        p_Name = SNewsSet("Cli_Representa")
+        p_Cli_Access = SNewsSet("User_Access")
+    %>
+    <!-- Header -->
+  <div class="header-wrapper">
+    <iframe src="../components/header.html" frameborder="0" scrolling="no"></iframe>
+  </div>
+   <!-- Nav -->
+  <div class="nav-wrapper">
+    <iframe src="../components/nav.html" frameborder="0" scrolling="no"></iframe>
+  </div>    
+
+    <!-- Main Container -->
+
+    <div class="main-container">
+      <h1>Welcome to the Inventory Section</h1>
+      <h2>Dashboard</h2>
+      <p>Welcome, <%= p_Name %>. Here is your inventory management dashboard.</p>
+      <div class="links-flex-container">
+          <div class="flex-item">
+              <a href="Inventory_Stock.html"><img src="../images-sist/icons/Icon_003.png" alt="Inventory" /></a>
+              <p class="link-title">Inventory</p>
+          </div>
+          <div class="flex-item">
+              <a href="Stock_IN.html"><img src="../images-sist/icons/ICON_013.png" alt="Stock IN" /></a>
+              <p class="link-title">Stock IN</p>
+          </div>
+          <div class="flex-item">
+              <a href="Stock_OUT.html"><img src="../images-sist/icons/ICON_013.png" alt="Stock OUT" /></a>
+              <p class="link-title">Stock OUT</p>
+          </div>
+      </div>
+    </div>
+    
+    <!-- Footer -->
+<footer>
+  <iframe src="../components/footer.html" frameborder="0" scrolling="no"></iframe>
+</footer>   
+
+</body>
+<script src="../resizeIframe.js"></script>
+</body>
+</html>

@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="es" style="width:100%; height:100%">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Intranet - CONDOR CLEANING & MAINTENANCE</title>
+    <link href="Intranet.css" rel="stylesheet" type="text/css">
+</head>
+<body>
+<%
+    p_Access = 0
+    p_FFirst = Request.QueryString("p_FFirst")
+    p_user = Request.Cookies("isLoggedInAs")("username")
+    p_company = Request.Form("p_Company")
+    p_Frec_Code = Request.Form("p_Frec_Code")
+
+    Set SNewsSet = Server.CreateObject("ADODB.RECORDSET")
+    StrSql = "SELECT * FROM CON_Users WHERE Cli_User = '" & p_user & "'"
+    SNewsSet.Open StrSql, Session("BDREGI_ConnectionString")
+    p_Name = SNewsSet("Cli_Representa")
+    p_user_cod = SNewsSet("user_cod")
+    p_Access = SNewsSet("Access_Maintenance")
+    p_user_access = SNewsSet("user_access")
+    p_user_corporative = SNewsSet("user_corporative")
+
+    If Not SNewsSet.EOF Then
+%>
+
+<!-- Header -->
+<div class="header-wrapper">
+  <iframe src="../components/header.html" frameborder="0" scrolling="no"></iframe>
+</div>
+ <!-- Nav -->
+<div class="nav-wrapper">
+  <iframe src="../components/nav.html" frameborder="0" scrolling="no"></iframe>
+</div>
+
+<!-- Main Container -->
+
+<main class="main-container">
+    <h1>Intranet - Maintenance</h1>
+    <h2>Welcome, <%= p_Name %></h2>
+    <p>Access your maintenance information below:</p>
+
+    <a href="Maintenance_First.asp?p_request=0" class="button">Enter a New Maintenance Order</a>
+    
+    <% If Not SNewsSet.EOF Then %>
+        <table>
+            <thead>
+                <tr>
+                    <th>Order Number</th>
+                    <th>Company</th>
+                    <th>Photo</th>
+                    <th>Date</th>
+                    <th>Description</th>
+                    <th>Requested By</th>
+                    <th>Proposed Amount</th>
+                    <th>Proposed Date</th>
+                    <th>Status</th>
+                    <th>Approved By</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% While Not SNewsSet.EOF %>
+                    <tr>
+                        <td><a href="Edit_Maintenance_rec.asp?p_Main_Reg=<%= SNewsSet("Main_Reg") %>"><%= SNewsSet("Main_Reg") %></a></td>
+                        <td><%= SNewsSet("Com_Descri") %></td>
+                        <td><img src="<%= SNewsSet("Main_Image") %>" alt="Maintenance Image" style="width:60px; height:60px;"></td>
+                        <td><%= SNewsSet("Main_Date") %></td>
+                        <td><%= SNewsSet("Main_Subject") & " - " & SNewsSet("Main_Descri") & " " & SNewsSet("Main_Proposal") %></td>
+                        <td><%= SNewsSet("Cli_Representa") %><br><%= SNewsSet("Main_Request_Date") %></td>
+                        <td><%= FormatCurrency(SNewsSet("Main_Estimate"), 2) %></td>
+                        <td><%= SNewsSet("Main_Estimate_date") %></td>
+                        <td><%= SNewsSet("Status_Descri") %><br><%= SNewsSet("Main_StatusDate") %></td>
+                        <td><%= SNewsSet("Main_Aproved_by") %><br><%= SNewsSet("Main_Aproved_Date") %></td>
+                    </tr>
+                    <% SNewsSet.MoveNext %>
+                <% Wend %>
+            </tbody>
+        </table>
+    <% End If %>
+</main>
+<% End If %>
+<!-- Footer -->
+<footer>
+  <iframe src="../components/footer.html" frameborder="0" scrolling="no"></iframe>
+</footer>   
+</body>
+<script src="../resizeIframe.js"></script>
+</html>

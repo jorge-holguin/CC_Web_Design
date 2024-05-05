@@ -1,0 +1,127 @@
+body {
+  font-family: 'Montserrat', sans-serif;
+  margin: 0;
+}
+
+/* Footer Styles */
+footer {
+  display: flex;
+  justify-content: center;
+  background-color: #181818;
+  width: 100%;
+}
+
+.footer-container {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;  /* Permite envolver las columnas en pantallas pequeñas */
+  align-items: start;
+  padding: 20px;
+  color: #dcdcdc;
+  text-align: justify;
+  width: 75%;  /* Asegura que el contenido del footer ocupe el 75% de la pantalla */
+}
+
+.admin-container {
+  display: flex;
+  justify-content: space-between;
+}
+
+.admin-column {
+  flex: 1; /* Ocupar el espacio proporcionalmente */
+  display: flex;
+  flex-direction: column;
+  padding: 10px;
+  color: #ffffff;
+}
+
+
+.admin-section {
+  background-color: transparent;
+  padding: 10px;
+  margin-bottom: 20px;
+}
+
+.admin-section h4,  /* Estilización específica para títulos dentro de admin-section */
+.menu-link,  /* Estilos para links dentro del footer */
+.address,  /* Estilos para la dirección */
+.info-item p {  /* Estilos para texto dentro de info-items */
+  color: #dcdcdc;  /* Aseguramos que el texto sea blanco */
+}
+
+.menu-link {
+  display: block;
+  text-decoration: none;
+  margin-bottom: 5px;
+}
+
+.menu-link:hover {
+  color: #007bff;
+  background-color: transparent;
+}
+
+.logo-dark {
+  max-width: 200px; /* Controlamos el tamaño máximo del logo */
+}
+
+.social-media {
+  display: flex;
+  justify-content: start;
+}
+
+.social-icon {
+  width: 32px;
+  height: 32px;
+  margin: 0 10px;
+  transition: fill 0.2s ease-in-out, transform 0.2s ease-in-out;
+}
+
+.social-icon:hover {
+  fill: #4CAF50; /* Cambio de color al hacer hover */
+  transform: rotate(360deg);
+}
+
+.info-item {
+  display: flex;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.icon-formal {
+  width: 24px;
+  margin-right: 10px;
+}
+
+.icon-formal:hover {
+  transform: scale(1.5);
+}
+
+/* Media Queries for Responsive Adjustments */
+@media (max-width: 768px) {
+  .admin-container {
+      flex-direction: column;
+  }
+
+  .admin-column {
+      width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  .footer-container {
+      width: 100%;  /* Ocupar todo el ancho en dispositivos muy pequeños */
+  }
+
+  .admin-column,
+  .schedule-button,
+  .menu-link,
+  .admin-section h4,
+  .info-item p {
+      font-size: 0.8em;  /* Reducción de la fuente para mejor visualización */
+  }
+
+  .social-icon,
+  .icon-formal {
+      width: 20px;  /* Reducción del tamaño de los iconos */
+  }
+}

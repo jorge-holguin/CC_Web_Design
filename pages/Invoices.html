@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="es" style="width:100%; height:100%">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Intranet - CONDOR CLEANING & MAINTENANCE</title>
+    <link href="pages.css" rel="stylesheet" type="text/css">
+</head>
+<body>
+<%
+    Function Fecha_Sp(Fecha_En)
+        Fecha_Sp = Right("00" & Trim(Month(Fecha_En)), 2) & "/" & Right("00" & Trim(Day(Fecha_En)), 2) & "/" & Year(Fecha_En)
+    End Function
+
+    p_user = Request.Cookies("isLoggedInAs")("username")
+    Set SNewsSet = Server.CreateObject("ADODB.RECORDSET")
+    StrSql = "SELECT * FROM CON_Cliente_Com WHERE Cli_User = '" & p_user & "'"
+    SNewsSet.Open StrSql, Session("BDREGI_ConnectionString")
+    p_Name = SNewsSet("Cli_Representa")
+    p_Cli_Contra = SNewsSet("Cli_Contra")
+    p_cli_cod = SNewsSet("Cli_Cod")
+    p_Company = SNewsSet("Com_Descri")
+
+    If Not SNewsSet.EOF Then
+%>
+<!-- Header -->
+<div class="header-wrapper">
+    <iframe src="../components/header.html" frameborder="0" scrolling="no"></iframe>
+</div>
+   <!-- Nav -->
+<div class="nav-wrapper">
+    <iframe src="../components/nav.html" frameborder="0" scrolling="no"></iframe>
+</div>
+
+<!-- Main Content Area -->
+<main class="main-container">
+    <h1>Welcome to the MarketPlace Invoices Section</h1>
+    <h2>Dashboard</h2>
+    <p>Welcome, <%= p_Name %>. Here you can view all your invoice details.</p>
+
+    <table class="invoice-table" width="100%">
+        <thead>
+            <tr>
+                <th>Date</th>
+                <th>Invoice Number</th>
+                <th>Company</th>
+                <th>Products/Services Detail</th>
+                <th>File (PDF)</th>
+                <th>Total Amount</th>
+                <th>Status</th>
+            </tr>
+        </thead>
+        <tbody>
+        <% 
+            While Not SNewsSet.EOF 
+                %>
+                <tr>
+                    <td><%= Fecha_Sp(SNewsSet("Invo_Date")) %></td>
+                    <td><%= SNewsSet("Invo_Numb") %></td>
+                    <td><%= SNewsSet("Com_Descri") %></td>
+                    <td><%= SNewsSet("Invo_Descri") %></td>
+                    <td><a href="<%= SNewsSet("Invo_File") %>" target="_blank">View File</a></td>
+                    <td><%= FormatNumber(SNewsSet("Invo_Monto"), 2) %></td>
+                    <td><%= SNewsSet("Status_Descri") %></td>
+                </tr>
+                <%
+                SNewsSet.MoveNext
+            Wend
+        %>
+        </tbody>
+    </table>
+</main>
+
+<!-- Footer -->
+<footer>
+    <iframe src="../components/footer.html" frameborder="0" scrolling="no"></iframe>
+</footer>   
+</body>
+<script src="../resizeIframe.js"></script>
+</html>

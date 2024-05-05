@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="es" style="width:100%; height:100%">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Intranet - CONDOR CLEANING & MAINTENANCE</title>
+    <link href="pages.css" rel="stylesheet" type="text/css">
+</head>
+<body>
+<%
+    p_user = Request.Cookies("isLoggedInAs")("username")
+    If Request.ServerVariables("REQUEST_METHOD") = "POST" Then
+        p_company = Request.Form("p_Company")
+    Else
+        p_company = Request.QueryString("p_Company")
+    End If
+
+    Set SNewsSet = Server.CreateObject("ADODB.RECORDSET")
+    StrSql = "SELECT * FROM CON_Users WHERE Cli_User = '" & p_user & "'"
+    SNewsSet.Open StrSql, Session("BDREGI_ConnectionString")
+    p_Name = SNewsSet("Cli_Representa")
+    p_user_cod = SNewsSet("user_cod")
+    
+    If Not SNewsSet.EOF Then
+%>
+    <!-- Header -->
+    <div class="header-wrapper">
+    <iframe src="../components/header.html" frameborder="0" scrolling="no"></iframe>
+  </div>
+   <!-- Nav -->
+  <div class="nav-wrapper">
+    <iframe src="../components/nav.html" frameborder="0" scrolling="no"></iframe>
+  </div>
+    
+  <!-- Main Container -->
+
+    <section>
+        <h1>Products & Equipment</h1>
+        <h2>Welcome, <%= p_Name %></h2>
+        <p>Manage your product and equipment inventory efficiently.</p>
+        <form action="Prod_Equip.asp" method="post">
+            <label for="company">Company:</label>
+            <select name="p_company" class="textFieldFgris">
+                <% 
+                    Set PaisSet = Server.CreateObject("ADODB.RECORDSET")
+                    StrSql = "SELECT * from CON_Cliente_com Where Cli_User = '" & p_user & "' and Com_Select = '0' order by Com_Descri"
+                    PaisSet.Open StrSql, Session("BDREGI_ConnectionString"), adOpenStatic, adLockPessimistic, adCmdText
+                    While Not PaisSet.EOF
+                        Response.Write "<option value='" & PaisSet("com_cod") & "'"
+                        If cint(PaisSet("com_cod")) = cint(p_company) Then
+                            Response.Write " selected"
+                        End If
+                        Response.Write ">" & PaisSet("com_descri")
+                        PaisSet.MoveNext
+                    Wend
+                %>
+            </select>
+            <input type="submit" class="boton" value="Display">
+        </form>
+        <% If p_Access > 6 Then %>
+            <% If p_Company <> "" Then %>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Picture</th>
+                            <th>Name</th>
+                            <th>Type</th>
+                            <th>Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <%
+                            Set tableSet = Server.CreateObject("ADODB.RECORDSET")
+                            StrSql = "SELECT * from CON_Mov_Pro_View where Com_Code = '" & p_company & "' order by Prod_Name"
+                            tableSet.Open StrSql, Session("BDREGI_ConnectionString"), adOpenStatic, adLockReadOnly
+                            While Not tableSet.EOF
+                        %>
+                        <tr>
+                            <td><img src="<%= tableSet("Prod_Image") %>" alt="Product Image" style="width:60px; height:60px;"></td>
+                            <td><%= tableSet("Prod_name") %></td>
+                            <td><%= tableSet("TProd_Des") %></td>
+                            <td><%= tableSet("Prod_Des") %></td>
+                        </tr>
+                        <% 
+                            tableSet.MoveNext
+                            Wend 
+                        %>
+                    </tbody>
+                </table>
+            <% End If %>
+        <% Else %>
+            <p>Restricted Information</p>
+        <% End If %>
+    </section>
+    <% End If %>
+
+    
+<!-- Footer -->
+<footer>
+    <iframe src="../components/footer.html" frameborder="0" scrolling="no"></iframe>
+</footer>   
+</body>
+<script src="../resizeIframe.js"></script>
+</html>

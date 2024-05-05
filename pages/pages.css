@@ -1,0 +1,128 @@
+body {
+  font-family: 'Montserrat', sans-serif;
+  margin: 0;
+  padding: 0;
+  background-image: url(../images-sist/background/bg-line.png);
+  background-repeat:repeat;
+  background-position: center top;
+  color: #1b557d;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: start;
+  min-height: 100vh;
+  width: 100%;
+}
+
+
+/* Header */
+.header-wrapper {
+  width: 100%;
+  overflow: hidden; /* Oculta cualquier contenido que desborde */
+}
+
+
+/* Nav */
+.nav-wrapper {
+  width: 100%;
+  overflow: hidden; /* Oculta cualquier contenido que desborde */
+}
+
+
+.main-container {
+    margin-top: 0; /* Elimina cualquier margen superior */
+    padding-top: 0; /* Asegúrate de que no hay padding superior */
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+.main-container p {
+  line-height: 0.5; /* Ajusta este valor según necesites, menor para más estrecho */
+}
+.content {
+  width: 100%;
+  
+}
+
+.links-flex-container {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-gap: 20px;
+  padding: 20px;
+}
+
+.flex-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.flex-item img {
+  width: 80px;
+  height: auto;
+  margin-bottom: 10px;
+}
+
+.flex-item p {
+  color: #1b557d;
+}
+
+.flex-item.log-off {
+  grid-column: 1 / -1; /* Makes it stretch across all columns */
+}
+
+/* Footer */
+footer {
+  width: 100%;
+  overflow: hidden; /* Oculta cualquier contenido que desborde */
+}
+
+iframe {
+  height: auto; /* Establece un alto fijo para los iframes de header y footer */
+  width: 100%;
+  border: none;
+}
+
+@media (min-width: 768px) {
+  .header-wrapper {
+    height: 90px; /* Altura fija para escritorio */
+  }
+}
+
+/* Media Queries */
+@media (max-width: 767px) {
+  body {
+      padding-top: 60px; /* Reducción del padding superior para dispositivos móviles */
+  }
+
+  .header-wrapper {
+    height: auto; /* Altura automática en dispositivos móviles */
+  }
+  .links-flex-container {
+      grid-template-columns: 1fr; /* Solo una columna en vistas estrechas */
+  }
+}
+
+iframe {
+  min-height: 100px; /* Reducir la altura mínima en tablets */
+}
+
+
+
+@media (max-width: 480px) {
+  body {
+      padding-top: 50px; /* Ajuste adicional para dispositivos muy pequeños */
+  }
+
+  .logo {
+      width: 100px; /* Tamaño ajustado del logo para pantallas pequeñas */
+  }
+  iframe {
+    min-height: 50px; /* Reducir aún más para dispositivos muy pequeños */
+  }
+}

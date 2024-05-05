@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Footer</title>
+    <!-- Enlace al archivo CSS del header -->
+    <link rel="stylesheet" type="text/css" href="footer.css">
+</head>
+<body>
+
+<!-- Contenido del footer -->
+<footer>
+    <div class="footer-container">
+        <div class="admin-column">
+            <img src="../images-sist/logo/logo_condor_dark.png" alt="CONDOR Logo" class="logo-dark">
+            <p class="description">We've been working in this industry for more than a decade, we can assure you that our crew is capable of cleaning absolutely any kind of a mess!</p>
+            <div class="social-media">
+                <a href="https://www.facebook.com/condor.cleaning.1" target="_blank" rel="noopener noreferrer"><img src="../images-sist/SVG/facebook.svg" alt="Facebook Icon" class="social-icon"></a>
+                <a href="https://www.twitter.com/" target="_blank" rel="noopener noreferrer"><img src="../images-sist/SVG/twitter.svg" alt="Twitter Icon" class="social-icon"></a>
+                <a href="https://www.instagram.com/" target="_blank" rel="noopener noreferrer"><img src="../images-sist/SVG/instagram.svg" alt="Instagram Icon" class="social-icon"></a>
+            </div>
+        </div>
+
+
+        <% If p_Cli_Access = 9 Then %>
+        <!-- Column 2: General Tables, Maintenance and Request -->
+        <div class="admin-column">
+            <div class="admin-section">
+                <h4>General Tables</h4>
+                <a href="Edit_Company.asp?p_orden=0" class="menu-link">Edit Company</a>
+                <a href="Edit_Users.asp?p_orden=0" class="menu-link">Edit Users</a>
+                <a href="Edit_Customers.asp?p_orden=0" class="menu-link">Customers's User</a>
+                <a href="Edit_TProducts.asp?p_orden=0" class="menu-link">Type of Product</a>
+                <a href="Edit_Products.asp?p_orden=0" class="menu-link">Products</a>
+                <a href="Edit_Tools.asp?p_orden=0" class="menu-link">Equipment</a>
+                <a href="Edit_Personal.asp?p_orden=0" class="menu-link">Staff</a>
+            </div>
+            <div class="admin-section">
+                <h4>Maintenance</h4>
+                <a href="mInvoice_Rec.asp" class="menu-link">Maintenance</a>
+            </div>
+            <div class="admin-section">
+                <h4>Request</h4>
+                <a href="Check_Notes.asp?p_orden=0" class="menu-link">To Address</a>
+            </div>
+        </div>
+        <!-- Column 3: Customers and Services,  Inventory and Marketing -->
+        <div class="admin-column">
+            <div class="admin-section">
+                <h4>Customers</h4>
+                <a href="Edit_CustomersMov.asp?p_orden=0" class="menu-link">Monitoring Services</a>
+            </div>
+            <div class="admin-section">
+                <h4>Services</h4>
+                <a href="Edit_Services.asp?p_orden=0" class="menu-link">Services</a>
+                <a href="Edit_ServicesDetail.asp?p_orden=0" class="menu-link">Services x Detail</a>
+                <a href="BInvoice_Rec.asp" class="menu-link">Invoices</a>
+            </div>
+            <div class="admin-section">
+                <h4>Inventory</h4>
+                <a href="Edit_Inventory.asp" class="menu-link">Inventory</a>
+                <a href="Edit_Stock_IN.asp" class="menu-link">Stock IN</a>
+                <a href="Edit_Stock_out.asp" class="menu-link">Stock OUT</a>
+            </div>
+            <div class="admin-section">
+                <h4>Marketing</h4>
+                <a href="Sale_Products.asp" class="menu-link">Product Register</a>
+                <a href="Market_Invoice.asp" class="menu-link">Marketing Invoices</a>
+            </div>
+        </div>
+        <% End If %>     
+        <!-- Column 4: Customers and Services,  Inventory and Marketing -->
+
+        <div class="admin-column">
+            <h3 class="title">Head Office</h3>
+            <div class="info-block">
+                <div class="info-item">
+                <img src="../images-sist/SVG/location-icon.svg" alt="Location" class="icon-formal">
+                <p>2270 Canoas Garden Avenue Ste "B",<br>Silicon Valley, CA 95123 US.</p>
+                </div>
+            <div class="info-item">
+                <img src="../images-sist/SVG/time-icon.svg" alt="Time" class="icon-formal">
+                <p>Mon - Sat 8.00 - 18.00.<br>Sunday CLOSED</p>
+            </div>
+            <div class="info-item">
+                <img src="../images-sist/SVG/phone-icon.svg" alt="Phone" class="icon-formal">
+                <p>(408) 807-0738</p>
+            </div>
+            </div>
+        </div>
+    </div>
+</footer> 
+
+</body>
+</html>

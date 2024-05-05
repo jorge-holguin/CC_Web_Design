@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en" style="width:100%; height:100%">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Intranet - CONDOR CLEANING & MAINTENANCE</title>
+    <link href="pages.css" rel="stylesheet" type="text/css">
+</head>
+<body>
+<%
+    p_user = Request.cookies("isLoggedInAs")("username")
+    p_Frec_Code = request.Form("p_Frec_Code")
+    
+    Set SNewsSet = Server.CreateObject("ADODB.RECORDSET")
+    StrSql = "SELECT * FROM CON_Cliente_Com WHERE Cli_User = '" & p_user & "' ;--"
+    SNewsSet.Open StrSql, Session("BDREGI_ConnectionString")
+    
+    p_Name = SNewsSet("Cli_Representa")
+    p_user_cod = SNewsSet("Cli_cod")
+    p_company = SNewsSet("Com_cod")
+    p_Access = SNewsSet("user_access")
+%>
+<%
+    If Not SNewsSet.eof Then 
+%>
+<!-- Header -->
+<div class="header-wrapper">
+  <iframe src="../components/header.html" frameborder="0" scrolling="no"></iframe>
+</div>
+ <!-- Nav -->
+<div class="nav-wrapper">
+  <iframe src="../components/nav.html" frameborder="0" scrolling="no"></iframe>
+</div>
+
+<main>
+    <div class="main-container">
+        <form action="Staff.asp" method="post">
+            <label for="p_company">Company:</label>
+            <select name="p_company" class="textFieldFgris">
+                <% Set PaisSet = Server.CreateObject("ADODB.RECORDSET")
+                   StrSql = "SELECT * FROM CON_Cliente_com WHERE Cli_User = '" & p_user & "' AND Com_Select = '0' ORDER BY Com_Descri;--"
+                   PaisSet.Open StrSql, Session("BDREGI_ConnectionString"), adOpenStatic, adLockPessimistic, adCmdText
+                   While Not PaisSet.EOF
+                       Response.Write "<option value='" & PaisSet("com_cod") & "'" & (IIf(cInt(PaisSet("com_cod")) = cInt(p_company), " selected", "")) & ">" & PaisSet("com_descri")
+                       PaisSet.MoveNext
+                   Wend
+                   PaisSet.Close
+                %>
+            </select>
+            <input type="submit" value="Display" class="boton">
+        </form>
+        <% If p_Access > 6 Then %>
+        <table>
+            <thead>
+                <tr>
+                    <th>Photo</th>
+                    <th>Name, Last Name</th>
+                    <th>Work Days</th>
+                    <th>Type of Work</th>
+                    <th>Manager</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% Set tableSet = Server.CreateObject("ADODB.RECORDSET")
+                   StrSql = "SELECT * FROM CON_Personal_Com_Per WHERE Com_Code = '" & p_company & "' ORDER BY percon_Status DESC;--"
+                   tableSet.Open StrSql, Session("BDREGI_ConnectionString"), adOpenStatic, adLockReadOnly
+                   While Not tableSet.EOF %>
+                <tr>
+                    <td><img src="<%=tableSet("Per_Image")%>" alt="Picture" width="81" height="81"></td>
+                    <td><%=tableSet("Per_Nom")%></td>
+                    <td><%=tableSet("PerCon_Dias")%></td>
+                    <td><%=tableSet("PerCon_Area")%></td>
+                    <td><%=tableSet("PerCon_Reporta")%> Phone: <%=tableSet("Per_Tel")%></td>
+                </tr>
+                <% tableSet.MoveNext
+                Wend
+                tableSet.Close
+                %>
+            </tbody>
+        </table>
+        <% Else
+            Response.Write("<script type='text/javascript'>alert('Restricted Information');</script>")
+        End If
+        %>
+    </div>
+</main>
+<%
+    Else
+        Response.Write("<script type='text/javascript'>alert('No data found');</script>")
+    End If
+    SNewsSet.Close
+%>
+
+<!-- Footer -->
+<footer>
+  <iframe src="../components/footer.html" frameborder="0" scrolling="no"></iframe>
+</footer>   
+</body>
+<script src="../resizeIframe.js"></script>
+</html>
+

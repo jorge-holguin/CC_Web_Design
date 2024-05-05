@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="es" style="width:100%; height:100%">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Intranet - CONDOR CLEANING & MAINTENANCE</title>
+    <link href="pages.css" rel="stylesheet" type="text/css">
+</head>
+<body>
+<%
+    p_user = Request.Cookies("isLoggedInAs")("username")
+
+    Set SNewsSet = Server.CreateObject("ADODB.RECORDSET")
+    StrSql = "SELECT * FROM CON_Cliente_Com WHERE Cli_User = '" & p_user & "';--"
+    SNewsSet.Open StrSql, Session("BDREGI_ConnectionString")
+    p_Name = SNewsSet("Cli_Representa")
+    p_Cli_Cod = SNewsSet("Cli_Cod") 
+%>
+<%
+    If Not SNewsSet.EOF Then 
+%>
+
+<!-- Header -->
+<div class="header-wrapper">
+  <iframe src="../components/header.html" frameborder="0" scrolling="no"></iframe>
+</div>
+ <!-- Nav -->
+<div class="nav-wrapper">
+  <iframe src="../components/nav.html" frameborder="0" scrolling="no"></iframe>
+</div>
+
+<div class="main-container">
+        <h1>Welcome <%= p_Name %></h1>
+        <div class="links-flex-container">
+            <!-- Dynamic server-side content -->
+            <form method="post" action="Request_Action.asp">
+                <h2>Manage Your Requests</h2>
+                <a href="Request_New.asp?p_customer=0" class="btn">Enter a New Request</a>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Reg</th>
+                            <th>Business</th>
+                            <th>Subject</th>
+                            <th>Request</th>
+                            <th>Date</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    <%
+                        Set TableSet = Server.CreateObject("ADODB.RECORDSET")
+                        StrSql = "SELECT * FROM CON_Notes_View WHERE user_Cod = '" & p_Cli_Cod & "' ORDER BY Not_fnota DESC;--" 
+                        TableSet.Open StrSql, Session("BDREGI_ConnectionString"), adOpenStatic, adLockReadOnly, adCmdText
+
+                        If Not TableSet.EOF Then
+                            While Not TableSet.EOF
+                    %>
+                        <tr>
+                            <td><%= TableSet("Not_Cod") %></td>
+                            <td><%= TableSet("Com_Descri") %></td>
+                            <td><%= TableSet("Not_Tit") %></td>
+                            <td><%= TableSet("Not_Des") %></td>
+                            <td><%= TableSet("Not_Fnota") %></td>
+                            <td><%= TableSet("Not_Status") = "0" ? "In Process" : "Completed" %></td>
+                        </tr>
+                    <%
+                            TableSet.MoveNext
+                            Wend
+                        End If
+                    %>
+                    </tbody>
+                </table>
+                <input type="submit" value="Delete Selected Requests" class="btn">
+            </form>
+        </div>
+  </div>
+
+<!-- Footer -->
+<footer>
+  <iframe src="../components/footer.html" frameborder="0" scrolling="no"></iframe>
+</footer>   
+</body>
+<script src="../resizeIframe.js"></script>
+</html>

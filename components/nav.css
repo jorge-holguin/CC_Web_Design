@@ -1,0 +1,96 @@
+body {
+    font-family: 'Montserrat', sans-serif;
+    margin: 0;
+}
+
+/* Nav */
+nav {
+    display: flex;
+    width: 100%;
+    align-items: center;
+    justify-content: space-evenly; /* Espacio uniforme entre elementos */
+    background-color: #ffffff;
+}
+
+.logo-container {
+    margin-left: 50px;
+    display: flex;
+    align-items: center;
+}
+
+.logo {
+    width: 200px;  /* Tamaño fijo para el logo */
+    padding: 5px;  /* Padding para evitar el contacto directo con los bordes */
+}
+
+.logo:hover {
+    transform: scale(1.1);  /* Efecto de hover para resaltar el logo */
+}
+
+.navbar-list {
+    list-style: none;
+    padding: 0;
+    display: flex;
+    margin: 0;
+    flex-wrap: wrap;
+}
+
+.navbar-item {
+    padding: 0 15px; /* Espacio entre elementos de la barra de navegación */
+}
+
+.navbar-item:hover {
+    color: #dd1515; /* Cambio de color al pasar el mouse */
+    transform: scale(1.1); /* Aumento de tamaño para destacar el elemento */
+}
+
+.nav-link {
+    text-decoration: none;
+    color: #000;
+    padding: 5px 10px;
+    font-size: 16px;
+    line-height: 1.4;
+    font-weight: 600;
+    transition: color 0.3s, transform 0.3s; /* Transiciones suaves para color y transformación */
+}
+
+.nav-link:hover {
+    color: #dd1515; /* Color al pasar el mouse */
+    transform: scale(1.1); /* Aumento de tamaño en hover */
+}
+
+.exit-link {
+    margin-right: 50px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.exit-link img {
+    width: 40px; /* Tamaño fijo para el icono de salida */
+}
+
+/* Media Queries para adaptabilidad en dispositivos móviles */
+@media (max-width: 768px) {
+    .logo {
+        width: 150px; /* Reducción del tamaño del logo */
+    }
+
+    .navbar-list {
+        flex-direction: column; /* Elementos en columna para mejor acceso */
+    }
+
+    .navbar-item {
+        padding: 5px 0; /* Ajuste del padding en modo vertical */
+    }
+}
+
+@media (max-width: 480px) {
+    .logo {
+        width: 100px; /* Más pequeño para pantallas muy estrechas */
+    }
+
+    .nav-container {
+        padding: 10px; /* Padding adecuado para pantallas pequeñas */
+    }
+}

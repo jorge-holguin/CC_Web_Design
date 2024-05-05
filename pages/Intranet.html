@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Intranet - CONDOR CLEANING & MAINTENANCE</title>
+    <link href="pages.css" rel="stylesheet" type="text/css">
+</head>
+<body>
+    <%
+        ' Variables de usuario y apertura de registro
+        p_user = Request.Cookies("isLoggedInAs")("username")
+        Set SNewsSet = Server.CreateObject("ADODB.RECORDSET")
+        StrSql = "SELECT * FROM CON_users WHERE cli_user = '" & p_user & "'"
+        SNewsSet.Open StrSql, Session("BDREGI_ConnectionString"), adOpenDynamic, adLockPessimistic, adCmdText
+        p_Name = SNewsSet("Cli_Representa")
+        p_Cli_Access = SNewsSet("User_Access")
+    %>
+   <!-- Header -->
+<div class="header-wrapper">
+    <iframe src="../components/header.html" frameborder="0" scrolling="no"></iframe>
+</div>
+   <!-- Nav -->
+<div class="nav-wrapper">
+    <iframe src="../components/nav.html" frameborder="0" scrolling="no"></iframe>
+</div>    
+
+    <div class="main-container">
+            <h1>Welcome to Your Intranet</h1>
+            <h2>Dashboard</h2>
+            <p>Welcome, <%=p_Name%>. Here is your custom dashboard.</p>
+            <% If p_Cli_Access = 9 Then %>
+                <p>You have administrator access. You can view and edit all administrative settings.</p>
+            <% Else %>
+                <p>You have standard user access. If you need higher-level access, please contact your administrator.</p>
+            <% End If %>
+    
+            <!-- Flexbox Container for Links -->
+            <div class="links-flex-container">
+                <% If p_Cli_Access = 9 Then %>
+                    <div class="flex-item">
+                        <a href="Delivery.asp"><img src="../images-sist/icons/Icon_001.png" alt="Delivery" /></a>
+                        <p class="link-title">Delivery</p>
+                    </div>
+                <% Else %>
+                    <div class="flex-item">
+                        <a href="Service_Agreement.asp"><img src="../images-sist/icons/Icon_001.png" alt="Service Agreement" /></a>
+                        <p class="link-title">Service Agreement</p>
+                    </div>
+                <% End If %>
+                
+                <!-- Remaining flex items -->
+            <div class="flex-item">
+                <a href="Service_Outline.asp"><img src="../images-sist/icons/Icon_005.png" alt="Service Outline" /></a>
+                <p>Service Outline</p>
+            </div>
+            <div class="flex-item">
+                <a href="Staff.asp"><img src="../images-sist/icons/ICON_007.png" alt="Staff" /></a>
+                <p>Staff</p>
+            </div>
+            <!-- ... Other flex items for Products & Equipment, Request, Invoices, etc. ... -->
+            
+            <div class="flex-item">
+                <a href="Maintenance.asp?p_FFirst=1"><img src="../images-sist/icons/ICON_013.png" alt="Maintenance" /></a>
+                <p>Maintenance</p>
+            </div>
+            <div class="flex-item">
+                <a href="Inventory.asp?p_Access=0"><img src="../images-sist/icons/ICON_018.png" alt="Inventory" /></a>
+                <p>Inventory</p>
+            </div>
+            <div class="flex-item">
+                <a href="MarketPlace.asp"><img src="../images-sist/icons/ICON_011.png" alt="Market Place" /></a>
+                <p>Market Place</p>
+            </div>
+
+            <!-- Log OFF in its own row -->
+            <div class="flex-item log-off">
+                <a href="LogOFF.asp"><img src="../images-sist/icons/ICON_010.png" alt="Log OFF" /></a>
+                <p>Log OFF</p>
+            </div>
+    </div>
+</div>
+
+<!-- Footer -->
+<footer>
+    <iframe src="../components/footer.html" frameborder="0" scrolling="no"></iframe>
+</footer>   
+
+</body>
+<script src="../resizeIframe.js"></script>
+</body>
+</html>

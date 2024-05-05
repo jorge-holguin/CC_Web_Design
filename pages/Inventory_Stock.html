@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="es" style="width:100%; height:100%">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Intranet - CONDOR CLEANING & MAINTENANCE</title>
+    <link href="pages.css" rel="stylesheet" type="text/css">
+</head>
+<body>
+<%
+    p_Access = 0
+    p_user = Request.Cookies("isLoggedInAs")("username")
+    p_company = Request.Form("p_Company")
+    p_Frec_Code = Request.Form("p_Frec_Code")
+
+    Set SNewsSet = Server.CreateObject("ADODB.RECORDSET")
+    StrSql = "SELECT * FROM CON_Users Where Cli_User = '" & p_user & "'"
+    SNewsSet.Open StrSql, Session("BDREGI_ConnectionString")
+    p_Name = SNewsSet("Cli_Representa")
+    p_user_cod = SNewsSet("user_cod")
+
+    If Not SNewsSet.EOF Then
+%>
+   <!-- Header -->
+<div class="header-wrapper">
+    <iframe src="../components/header.html" frameborder="0" scrolling="no"></iframe>
+</div>
+   <!-- Nav -->
+<div class="nav-wrapper">
+    <iframe src="../components/nav.html" frameborder="0" scrolling="no"></iframe>
+</div>    
+
+<!-- Main Content Area -->
+<main class="main-container">
+    <h1>Intranet - Current Stock</h1>
+    <h2>Welcome, <%= p_Name %></h2>
+    <p>Here is the information you have access to:</p>
+
+    <form action="Inventory_Stock.asp" method="post">
+        <div>
+            <label for="p_company">Company: </label>
+            <select name="p_company" class="textFieldFgris">
+                <% 
+                    Set CompanySet = Server.CreateObject("ADODB.RECORDSET")
+                    CompanySql = "SELECT * FROM CON_Cliente_com Where Cli_User = '" & p_user & "' and Com_Select = '0' ORDER BY Com_Descri"
+                    CompanySet.Open CompanySql, Session("BDREGI_ConnectionString"), adOpenStatic, adLockPessimistic
+
+                    While Not CompanySet.EOF
+                        Response.Write "<option value='" & CompanySet("com_cod") & "'" & (IIf(CInt(CompanySet("com_cod")) = CInt(p_company), " selected='selected'", "")) & ">" & CompanySet("com_descri") & "</option>"
+                        CompanySet.MoveNext
+                    Wend
+                %>
+            </select>
+            <input type="submit" value="Display" class="boton">
+        </div>
+    </form>
+
+    <% If p_Access > 6 And p_company <> "" Then %>
+    <table>
+        <tr>
+            <th>Photo</th>
+            <th>Code</th>
+            <th>Item Description</th>
+            <th>Reorder Point</th>
+            <th>Reorder Quantity</th>
+            <th>Last Inventory</th>
+            <th>Move IN</th>
+            <th>Move OUT</th>
+            <th>Current Stock</th>
+        </tr>
+        <%
+            Set StockSet = Server.CreateObject("ADODB.RECORDSET")
+            StockSql = "SELECT * FROM CON_Stocks_view1 WHERE Com_Code = '" & p_company & "' ORDER BY Prod_des DESC"
+            StockSet.Open StockSql, Session("BDREGI_ConnectionString"), adOpenStatic, adLockReadOnly
+
+            While Not StockSet.EOF
+                Dim Stock_Current
+                Stock_Current = StockSet("Stock_Last") + StockSet("S_Tot_in") - StockSet("S_Tot_out")
+                %>
+                <tr>
+                    <td><img src="<%= StockSet("Prod_Image") %>" alt="Picture" width="60" height="60"></td>
+                    <td><%= StockSet("Stock_Reg") %></td>
+                    <td><%= StockSet("Prod_Name") & "<br>" & StockSet("Prod_Des") %></td>
+                    <td><%= FormatNumber(StockSet("Stock_Minimum"), 0) %></td>
+                    <td><%= FormatNumber(StockSet("Stock_Order"), 0) %></td>
+                    <td><%= FormatNumber(StockSet("Stock_Last"), 0) %><br><span><%= StockSet("Stock_Last_Date") %></span></td>
+                    <td><a href="Stock_In.asp">Move IN</a></td>
+                    <td><a href="Stock_Out.asp">Move OUT</a></td>
+                    <td>
+                        <%= FormatNumber(Stock_Current, 0) %>
+                        <% If Stock_Current <= StockSet("Stock_Minimum") Then %>
+                            <br><span class='textoRojoBoldBlink'>Reorder ! </span>
+                        <% End If %>
+                    </td>
+                </tr>
+                <%
+                StockSet.MoveNext
+            Wend
+        %>
+    </table>
+    <% Else %>
+        <p>Restricted Information. Please select a company.</p>
+    <% End If %>
+</main>
+
+<% End If %>
+<!-- Footer -->
+<footer>
+    <iframe src="../components/footer.html" frameborder="0" scrolling="no"></iframe>
+</footer>   
+
+</body>
+<script src="../resizeIframe.js"></script>
+</body>
+</html>
+
