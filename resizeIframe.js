@@ -18,5 +18,5 @@ function updateIframeHeight(iframe) {
         } catch (e) {
             console.error("Error adjusting iframe height:", e);
         }
-    }, 500); // Delay para asegurar que el contenido interno está completamente cargado
+    }, 200); // Delay para asegurar que el contenido interno está completamente cargado
 }
